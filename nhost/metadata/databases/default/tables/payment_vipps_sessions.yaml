@@ -1,0 +1,7 @@
+table:
+  name: vipps_sessions
+  schema: payment
+object_relationships:
+  - name: org_user
+    using:
+      foreign_key_constraint_on: org_user_id

@@ -1,0 +1,3 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "auth"."roles"("role") VALUES (E'user_with_inherit') ON CONFLICT ("role") DO NOTHING;
