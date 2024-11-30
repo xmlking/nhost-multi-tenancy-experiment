@@ -36,14 +36,13 @@ maxDepthQueries = 4
 version = 20
 
 [auth]
-version = '0.36.1'
+version = '0.26.0'
 
 [auth.elevatedPrivileges]
-mode = 'required'
+mode = 'disabled'
 
 [auth.redirections]
-clientUrl = 'https://console.traefik.me:5173'
-allowedUrls = ['https://console.traefik.me:5173', 'https://console.traefik.me:5173/profile', 'https://console.traefik.me:4173', 'https://console.traefik.me:4173/profile', 'https://console.traefik.me:3000', 'https://console.traefik.me:3000/profile', 'https://console.traefik.me', 'https://console.traefik.me/profile', 'https://*.vercel.app']
+clientUrl = 'http://localhost:3000'
 
 [auth.signUp]
 enabled = true
@@ -75,17 +74,21 @@ rating = 'g'
 [auth.session.accessToken]
 expiresIn = 900
 
-# [[auth.session.accessToken.customClaims]]
-# key = 'allowed-orgs'
-# value = 'allowedOrgs[].organization'
+[[auth.session.accessToken.customClaims]]
+key = 'Org-Ids'
+value = 'org_users.org_id[]'
 
-# [[auth.session.accessToken.customClaims]]
-# key = 'default-org'
-# value = 'metadata.default_org'
+[[auth.session.accessToken.customClaims]]
+key = 'Org-User-Id'
+value = 'user_profile.current_org_user'
 
-# [[auth.session.accessToken.customClaims]]
-# key = 'user-email'
-# value = 'email'
+[[auth.session.accessToken.customClaims]]
+key = 'Org-Id'
+value = 'user_profile.org_user.org_id'
+
+[[auth.session.accessToken.customClaims]]
+key = 'user-email'
+value = 'email'
 
 [auth.session.refreshToken]
 expiresIn = 2592000
@@ -95,15 +98,15 @@ expiresIn = 2592000
 enabled = false
 
 [auth.method.emailPasswordless]
-enabled = true
+enabled = false
 
 [auth.method.otp]
 [auth.method.otp.email]
-enabled = true
+enabled = false
 
 [auth.method.emailPassword]
 hibpEnabled = false
-emailVerificationRequired = true
+emailVerificationRequired = false
 passwordMinLength = 9
 
 [auth.method.smsPasswordless]
@@ -114,10 +117,8 @@ enabled = false
 enabled = false
 
 [auth.method.oauth.azuread]
-tenant = '{{ secrets.AUTH_PROVIDER_AZUREAD_TENANT }}'
-enabled = true
-clientId = '{{ secrets.AUTH_PROVIDER_AZUREAD_CLIENT_ID }}'
-clientSecret = '{{ secrets.AUTH_PROVIDER_AZUREAD_CLIENT_SECRET }}'
+tenant = 'common'
+enabled = false
 
 [auth.method.oauth.bitbucket]
 enabled = false
@@ -129,19 +130,13 @@ enabled = false
 enabled = false
 
 [auth.method.oauth.github]
-enabled = true
-clientId = '{{ secrets.AUTH_PROVIDER_GITHUB_CLIENT_ID }}'
-scope = ['openid', 'email', 'profile']
-clientSecret = '{{ secrets.AUTH_PROVIDER_GITHUB_CLIENT_SECRET }}'
+enabled = false
 
 [auth.method.oauth.gitlab]
 enabled = false
 
 [auth.method.oauth.google]
-enabled = true
-clientId = '{{ secrets.AUTH_PROVIDER_GOOGLE_CLIENT_ID }}'
-scope = ['openid', 'email', 'profile']
-clientSecret = '{{ secrets.AUTH_PROVIDER_GOOGLE_CLIENT_SECRET }}'
+enabled = false
 
 [auth.method.oauth.linkedin]
 enabled = false
@@ -165,11 +160,7 @@ enabled = false
 enabled = false
 
 [auth.method.webauthn]
-enabled = true
-
-[auth.method.webauthn.relyingParty]
-name = 'Spectacular Console App'
-origins = ['https://console.traefik.me:5173']
+enabled = false
 
 [auth.method.webauthn.attestation]
 timeout = 60000
@@ -202,7 +193,8 @@ limit = 100
 interval = '1m'
 
 [postgres]
-version = '16.4-202401126-1'
+#version = '16.4-202401126-1'
+version = '14.13-202401126-1'
 
 [postgres.resources]
 enablePublicAccess = true
@@ -214,14 +206,6 @@ maxWalSenders = 10
 maxReplicationSlots = 10
 
 [provider]
-[provider.smtp]
-user = '{{ secrets.AUTH_SMTP_USER }}'
-password = '{{ secrets.AUTH_SMTP_PASS }}'
-sender = '{{ secrets.AUTH_SMTP_SENDER }}'
-host = '{{ secrets.AUTH_SMTP_HOST }}'
-port = 1025
-secure = false
-method = 'PLAIN'
 
 [storage]
 version = '0.6.1'

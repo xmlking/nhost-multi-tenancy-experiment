@@ -1,0 +1,52 @@
+###
+@graphqlEndpoint =  {{$dotenv NHOST_GRAPHQL_URL}}
+@graphqlAdminToken = {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
+@authEndpoint = {{$dotenv NHOST_AUTH_URL}}
+
+@userEmail = sumo.species@gmail.com
+@userPassword = Str0ngPassw#ord-94|%
+
+# set token without `''`
+@accessToken =
+###
+
+### Create User
+# @name createUser
+POST {{authEndpoint}}/signup/email-password
+Content-Type: application/json
+
+{
+  "email": "john.smith@gmail.com",
+  "password": "Str0ngPassw#ord-94|%",
+  "options": {
+    "displayName": "John Smith",
+    "locale": "en",
+    "redirectTo": "https://console.traefik.me:5173/dashboard"
+  }
+}
+
+### Create User2
+# @name createUser2
+POST {{authEndpoint}}/signup/email-password
+Content-Type: application/json
+
+{
+  "email": "sumo.species@gmail.com",
+  "password": "Str0ngPassw#ord-94|%",
+  "options": {
+    "displayName": "Sumo Species",
+    "locale": "en",
+    "redirectTo": "https://console.traefik.me:5173/dashboard"
+  }
+}
+
+
+### SignIn
+# @name signIn
+POST {{authEndpoint}}/signin/email-password
+Content-Type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}

@@ -1,0 +1,4 @@
+SET check_function_bodies = false;
+INSERT INTO public.org_users (id, created_at, updated_at, org_id, user_id, role) VALUES ('09c66d58-eabc-4f1b-a69f-547b9069b61a', '2024-11-30 22:41:54.462758+00', '2024-11-30 22:41:54.462758+00', '406a6fc6-ecb9-4f0f-9812-8a2abb717520', '421c60bc-104f-4181-ac6b-49e2269ba77c', 'OWNER');
+INSERT INTO public.org_users (id, created_at, updated_at, org_id, user_id, role) VALUES ('1ad7bdf6-084a-44ff-b643-15fe6ee47383', '2024-11-30 22:42:20.647892+00', '2024-11-30 22:42:20.647892+00', '4f073c66-e9e5-4f6c-a425-a48ed6fd1e04', '193c2cac-6a22-4e9c-b5f8-93fe464c9875', 'OWNER');
+INSERT INTO public.org_users (id, created_at, updated_at, org_id, user_id, role) VALUES ('f53dfbf7-bf04-4b5e-9adf-1e3ce7b3d514', '2024-11-30 22:42:57.42219+00', '2024-11-30 22:42:57.42219+00', '406a6fc6-ecb9-4f0f-9812-8a2abb717520', '193c2cac-6a22-4e9c-b5f8-93fe464c9875', 'MEMBER');

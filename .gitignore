@@ -1,3 +1,4 @@
-.nhost
-.secrets
 .idea
+.nhost
+!.secrets
+!.env

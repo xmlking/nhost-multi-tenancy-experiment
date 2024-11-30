@@ -1,4 +1,15 @@
-CREATE TABLE "public"."org_users" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), "org_id" uuid NOT NULL, "user_id" uuid NOT NULL, "role" text NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("org_id") REFERENCES "public"."orgs"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON UPDATE restrict ON DELETE cascade);
+CREATE TABLE "public"."org_users" (
+    "id" uuid NOT NULL DEFAULT gen_random_uuid (),
+    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "updated_at" timestamptz NOT NULL DEFAULT now(),
+    "org_id" uuid NOT NULL,
+    "user_id" uuid NOT NULL,
+    "role" text NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("org_id") REFERENCES "public"."orgs" ("id") ON UPDATE restrict ON DELETE cascade,
+    FOREIGN KEY ("role") REFERENCES "auth"."roles" ("role") ON UPDATE restrict ON DELETE cascade,
+    FOREIGN KEY ("user_id") REFERENCES "auth"."users" ("id") ON UPDATE restrict ON DELETE cascade
+);
 CREATE OR REPLACE FUNCTION "public"."set_current_timestamp_updated_at"()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -16,3 +27,4 @@ EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
 COMMENT ON TRIGGER "set_public_org_users_updated_at" ON "public"."org_users"
 IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
+

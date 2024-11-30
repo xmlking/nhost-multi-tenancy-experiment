@@ -10,7 +10,7 @@ configuration:
     created_at:
       custom_name: createdAt
     default_role:
-      custom_name: defaultRole
+      custom_name: defaultRole1
     disabled:
       custom_name: disabled
     display_name:
@@ -55,7 +55,7 @@ configuration:
     active_mfa_type: activeMfaType
     avatar_url: avatarUrl
     created_at: createdAt
-    default_role: defaultRole
+    default_role: defaultRole1
     disabled: disabled
     display_name: displayName
     email: email
@@ -134,3 +134,9 @@ array_relationships:
         table:
           name: user_providers
           schema: auth
+computed_fields:
+  - name: defaultRole
+    definition:
+      function:
+        name: current_org_users_default_role
+        schema: public

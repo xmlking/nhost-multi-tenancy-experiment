@@ -1,0 +1,3 @@
+SET check_function_bodies = false;
+INSERT INTO public.user_profiles (id, created_at, updated_at, current_org_user, user_id) VALUES ('7953389d-0232-4237-8de3-7fbc947ffac5', '2024-11-30 22:42:05.006668+00', '2024-11-30 22:42:05.006668+00', '09c66d58-eabc-4f1b-a69f-547b9069b61a', '421c60bc-104f-4181-ac6b-49e2269ba77c');
+INSERT INTO public.user_profiles (id, created_at, updated_at, current_org_user, user_id) VALUES ('25f390be-e0f6-42e1-a441-ddc6208fd7b8', '2024-11-30 22:42:38.630488+00', '2024-11-30 22:47:57.17167+00', 'f53dfbf7-bf04-4b5e-9adf-1e3ce7b3d514', '193c2cac-6a22-4e9c-b5f8-93fe464c9875');
