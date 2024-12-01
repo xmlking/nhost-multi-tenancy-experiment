@@ -9,7 +9,7 @@ Based on https://github.com/viktorfa/nhost-saas-boilerplate/tree/main
 
 ```shell
 nhost down --volumes
-nhost up --apply-seed
+nhost up --apply-seeds
 ```
 
 ### Export Seeds
