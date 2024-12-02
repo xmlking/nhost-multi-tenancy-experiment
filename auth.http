@@ -41,12 +41,22 @@ Content-Type: application/json
 }
 
 
-### SignIn
+### SignIn1
 # @name signIn
 POST {{authEndpoint}}/signin/email-password
 Content-Type: application/json
 
 {
-  "email": "{{userEmail}}",
-  "password": "{{userPassword}}"
+  "email": "john.smith@gmail.com",
+  "password": "Str0ngPassw#ord-94|%"
+}
+
+### SignIn2
+# @name signIn
+POST {{authEndpoint}}/signin/email-password
+Content-Type: application/json
+
+{
+  "email": "sumo.species@gmail.com",
+  "password": "Str0ngPassw#ord-94|%"
 }

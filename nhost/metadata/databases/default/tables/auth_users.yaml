@@ -88,23 +88,19 @@ configuration:
     update: updateUsers
     update_by_pk: updateUser
 object_relationships:
+  - name: currentOrg
+    using:
+      foreign_key_constraint_on: current_org_user_id
   - name: defaultRoleByRole
     using:
       foreign_key_constraint_on: default_role
-  - name: user_profile
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: user_profiles
-          schema: public
 array_relationships:
-  - name: org_users
+  - name: allowedOrgs
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          name: org_users
+          name: user_org_roles
           schema: public
   - name: refreshTokens
     using:
@@ -134,9 +130,35 @@ array_relationships:
         table:
           name: user_providers
           schema: auth
-computed_fields:
-  - name: defaultRole
-    definition:
-      function:
-        name: current_org_users_default_role
-        schema: public
+select_permissions:
+  - role: private
+    permission:
+      columns:
+        - phone_number
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - active_mfa_type
+        - avatar_url
+        - created_at
+        - current_org_user_id
+        - default_role
+        - display_name
+        - email
+        - email_verified
+        - id
+        - is_anonymous
+        - last_seen
+        - locale
+        - metadata
+        - phone_number_verified
+        - updated_at
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+    comment: ""

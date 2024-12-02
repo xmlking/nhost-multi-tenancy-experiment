@@ -1,5 +1,20 @@
-- role_name: user_with_inherit
+- role_name: me
+  role_set:
+    - user
+    - private
+- role_name: org:admin
+  role_set:
+    - org:member
+- role_name: org:billing
+  role_set:
+    - user
+- role_name: org:member
+  role_set:
+    - user
+- role_name: org:owner
+  role_set:
+    - org:admin
+    - org:billing
+- role_name: user
   role_set:
     - public
-    - me
-    - user

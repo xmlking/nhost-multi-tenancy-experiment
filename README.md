@@ -15,23 +15,26 @@ nhost up --apply-seeds
 ### Export Seeds
 
 ```shell
-hasura seed create 001_roles --database-name default --from-table auth.roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 002_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 003_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 004_orgs --database-name default --from-table public.orgs --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 005_org_userss --database-name default --from-table public.org_users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 005_user_profiles --database-name default --from-table public.user_profiles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 001_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 002_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 003_organizations --database-name default --from-table public.organizations --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 004_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
 ```
 
 
 ## Test
 
-Switch `current_org_user` in `public.user_profiles` table between `1ad7bdf6-084a-44ff-b643-15fe6ee47383` (OWNER) and `f53dfbf7-bf04-4b5e-9adf-1e3ce7b3d514` (MEMBER) and test below **SignIn** request
+Switch `current_org_user_id` in `auth.users` table `metadata` between `b5a75385-47de-429a-9488-433567deb762` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) and test below **SignIn** request
 ```sql
-UPDATE public.user_profiles
-SET current_org_user = 'f53dfbf7-bf04-4b5e-9adf-1e3ce7b3d514'
-WHERE user_id = '193c2cac-6a22-4e9c-b5f8-93fe464c9875';
+UPDATE auth.users
+SET metadata['current_org_user_id'] = '30726982-30f6-4a57-b2d6-bf87a86cc1e9'::uuid
+WHERE id = 'bacd19f4-0cc4-43d1-9e7a-4e5098ed8d83';
+--- revert
+UPDATE auth.users
+SET metadata['current_org_user_id'] = 'b5a75385-47de-429a-9488-433567deb762'::uuid
+WHERE id = 'bacd19f4-0cc4-43d1-9e7a-4e5098ed8d83';
 ```
+
 
 ```http
 ### SignIn
@@ -67,55 +70,57 @@ Connection: close
 
 {
   "session": {
-    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLU9yZy1JZCI6IjQwNmE2ZmM2LWVjYjktNGYwZi05ODEyLThhMmFiYjcxNzUyMCIsIngtaGFzdXJhLU9yZy1JZHMiOiJ7XCI0ZjA3M2M2Ni1lOWU1LTRmNmMtYTQyNS1hNDhlZDZmZDFlMDRcIixcIjQwNmE2ZmM2LWVjYjktNGYwZi05ODEyLThhMmFiYjcxNzUyMFwifSIsIngtaGFzdXJhLU9yZy1Vc2VyLUlkIjoiZjUzZGZiZjctYmYwNC00YjVlLTlhZGYtMWUzY2U3YjNkNTE0IiwieC1oYXN1cmEtdXNlci1lbWFpbCI6InN1bW8uc3BlY2llc0BnbWFpbC5jb20iLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm1lIiwidXNlciIsIk1FTUJFUiJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJNRU1CRVIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiMTkzYzJjYWMtNmEyMi00ZTljLWI1ZjgtOTNmZTQ2NGM5ODc1IiwieC1oYXN1cmEtdXNlci1pcy1hbm9ueW1vdXMiOiJmYWxzZSJ9LCJzdWIiOiIxOTNjMmNhYy02YTIyLTRlOWMtYjVmOC05M2ZlNDY0Yzk4NzUiLCJpYXQiOjE3MzMwMDk3ODcsImV4cCI6MTczMzAxMDY4NywiaXNzIjoiaGFzdXJhLWF1dGgifQ.xAfrPwfVT9Q71Y7Dj1_11uL3p_dzKpJORA4GphXY9_8",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMxMTU3NzcsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6IntcInVzZXJcIixcIm1lXCJ9IiwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoib3JnOm93bmVyIiwieC1oYXN1cmEtb3JnLWlkIjoiOGRmZDlhMzEtZGUwMS00N2JlLTkyYTctYmExYzcyMGM2MjcwIiwieC1oYXN1cmEtb3JnLWlkcyI6IntcIjhkZmQ5YTMxLWRlMDEtNDdiZS05MmE3LWJhMWM3MjBjNjI3MFwiLFwiZDVkYmI2YjYtNWU0My00ZGNhLWI4NTUtYmU5YjY1YjY2OTViXCJ9IiwieC1oYXN1cmEtb3JnLXVzZXItaWQiOiIwMTc0NzdmZi00ZTU1LTRiZTQtOTAyZS02MTI1NmZhYTQ4NTkiLCJ4LWhhc3VyYS11c2VyLWVtYWlsIjoiam9obi5zbWl0aEBnbWFpbC5jb20iLCJ4LWhhc3VyYS11c2VyLWlkIjoiNTcyYWQxYzAtZjk3Yi00ZTE2LWIxZjYtOGI1Y2E5MGY5MzFmIiwieC1oYXN1cmEtdXNlci1pcy1hbm9ueW1vdXMiOiJmYWxzZSJ9LCJpYXQiOjE3MzMxMTQ4NzcsImlzcyI6Imhhc3VyYS1hdXRoIiwic3ViIjoiNTcyYWQxYzAtZjk3Yi00ZTE2LWIxZjYtOGI1Y2E5MGY5MzFmIn0.ENprVIYuwEFzocse6hG6xSM_4wPwyISZheOb5qX6pDA",
     "accessTokenExpiresIn": 900,
-    "refreshToken": "7b360365-c32d-4aaf-9a89-b76396549adf",
-    "refreshTokenId": "4aa0ec9c-211d-4085-ba22-c87e3b6bbcb0",
+    "refreshToken": "de3ef435-d125-4568-a686-a4b85069726b",
+    "refreshTokenId": "7d617cf3-06b2-4ce0-ba57-e5d54c47a58d",
     "user": {
-      "id": "193c2cac-6a22-4e9c-b5f8-93fe464c9875",
-      "createdAt": "2024-11-30T22:39:24.230415+00:00",
-      "displayName": "Sumo Species",
-      "avatarUrl": "https://s.gravatar.com/avatar/8c1122211b5cb0e743da6404e4e9243b?r=g&default=mp",
-      "locale": "en",
-      "email": "sumo.species@gmail.com",
-      "isAnonymous": false,
-      "defaultRole": "MEMBER",
-      "metadata": {},
+      "avatarUrl": "https://www.gravatar.com/avatar/1c874909e198bf87d38b50ef7e4d3163?d=mp\u0026r=g",
+      "createdAt": "2024-12-02T03:17:53.317046Z",
+      "defaultRole": "user",
+      "displayName": "John Smith",
+      "email": "john.smith@gmail.com",
       "emailVerified": false,
-      "phoneNumber": null,
+      "id": "572ad1c0-f97b-4e16-b1f6-8b5ca90f931f",
+      "isAnonymous": false,
+      "locale": "en",
+      "metadata": {
+        "current_org_user_id": "017477ff-4e55-4be4-902e-61256faa4859"
+      },
       "phoneNumberVerified": false,
-      "activeMfaType": null,
       "roles": [
-        "me",
-        "user"
+        "user",
+        "me"
       ]
     }
-  },
-  "mfa": null
+  }
 }
 ```
 
 ```json
 {
+  "exp": 1733115777,
   "https://hasura.io/jwt/claims": {
-    "x-hasura-Org-Id": "406a6fc6-ecb9-4f0f-9812-8a2abb717520",
-    "x-hasura-Org-Ids": "{\"4f073c66-e9e5-4f6c-a425-a48ed6fd1e04\",\"406a6fc6-ecb9-4f0f-9812-8a2abb717520\"}",
-    "x-hasura-Org-User-Id": "f53dfbf7-bf04-4b5e-9adf-1e3ce7b3d514",
-    "x-hasura-user-email": "sumo.species@gmail.com",
-    "x-hasura-allowed-roles": [
-      "me",
-      "user",
-      "MEMBER"
-    ],
-    "x-hasura-default-role": "MEMBER",
-    "x-hasura-user-id": "193c2cac-6a22-4e9c-b5f8-93fe464c9875",
+    "x-hasura-allowed-roles": "{\"user\",\"me\"}",
+    "x-hasura-default-role": "org:owner",
+    "x-hasura-org-id": "8dfd9a31-de01-47be-92a7-ba1c720c6270",
+    "x-hasura-org-ids": "{\"8dfd9a31-de01-47be-92a7-ba1c720c6270\",\"d5dbb6b6-5e43-4dca-b855-be9b65b6695b\"}",
+    "x-hasura-org-user-id": "017477ff-4e55-4be4-902e-61256faa4859",
+    "x-hasura-user-email": "john.smith@gmail.com",
+    "x-hasura-user-id": "572ad1c0-f97b-4e16-b1f6-8b5ca90f931f",
     "x-hasura-user-is-anonymous": "false"
   },
-  "sub": "193c2cac-6a22-4e9c-b5f8-93fe464c9875",
-  "iat": 1733009787,
-  "exp": 1733010687,
-  "iss": "hasura-auth"
+  "iat": 1733114877,
+  "iss": "hasura-auth",
+  "sub": "572ad1c0-f97b-4e16-b1f6-8b5ca90f931f"
 }
+```
+
+## Hasura Auth Custom
+
+```shell
+docker tag nhost/hasura-auth:0.36.1-sumo ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-sumo
+docker push ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-sumo
 ```
 
 ## Schema
