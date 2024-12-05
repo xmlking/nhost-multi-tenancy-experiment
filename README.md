@@ -1,9 +1,6 @@
 # nHost multi-tenant experiment
 
-
-
-Based on https://github.com/viktorfa/nhost-saas-boilerplate/tree/main
-
+Based on <https://github.com/viktorfa/nhost-saas-boilerplate/tree/main>
 
 ## Start
 
@@ -21,10 +18,10 @@ hasura seed create 003_organizations --database-name default --from-table public
 hasura seed create 004_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
 ```
 
-
 ## Test
 
 Switch `current_org_user_id` in `auth.users` table `metadata` between `b5a75385-47de-429a-9488-433567deb762` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) and test below **SignIn** request
+
 ```sql
 UPDATE auth.users
 SET metadata['current_org_user_id'] = '30726982-30f6-4a57-b2d6-bf87a86cc1e9'::uuid
@@ -34,7 +31,6 @@ UPDATE auth.users
 SET metadata['current_org_user_id'] = 'b5a75385-47de-429a-9488-433567deb762'::uuid
 WHERE id = 'bacd19f4-0cc4-43d1-9e7a-4e5098ed8d83';
 ```
-
 
 ```http
 ### SignIn
@@ -49,6 +45,7 @@ Content-Type: application/json
 ```
 
 Response
+
 ```
 HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
@@ -127,7 +124,6 @@ docker push ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-su
 
 ![diagram.png](diagram.png)
 
-## Limitations 
+## Limitations
 
-- we have to use _hasura-auth_ version `'0.26.0'` to make this work, because after `'0.26.0'` _hasura-auth_ will use `go` lang and `SQL` to query data instead of `GraphQL` with give us flexibility
-- create new use may not work, because, we tampered `default_role` metadata in `auth.users` table and used `computed_fields` in place of it.
+- we need to fork [nhost/hasura-auth](https://github.com/nhost/hasura-auth) and [allow custom claims to overwrite the default claims](https://github.com/xmlking/hasura-auth/commit/6b22b22d090a07f7292f8e35ae4b4a93f16832b5) untile the official nhsot natively suport `multi-tenency`.
