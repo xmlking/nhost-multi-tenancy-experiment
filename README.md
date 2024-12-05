@@ -19,17 +19,25 @@ hasura seed create 004_user_org_roles --database-name default --from-table publi
 ```
 
 ## Test
-
-Switch `current_org_user_id` in `auth.users` table `metadata` between `b5a75385-47de-429a-9488-433567deb762` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) and test below **SignIn** request
+Switch `current_org_user_id` filed in `auth.users` table's JSONB `metadata` column betweenL:
+`017477ff-4e55-4be4-902e-61256faa4859` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) 
+for `auth.user.id = 572ad1c0-f97b-4e16-b1f6-8b5ca90f931f` and test below **SignIn** request
 
 ```sql
 UPDATE auth.users
-SET metadata['current_org_user_id'] = '30726982-30f6-4a57-b2d6-bf87a86cc1e9'::uuid
-WHERE id = 'bacd19f4-0cc4-43d1-9e7a-4e5098ed8d83';
+SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"30726982-30f6-4a57-b2d6-bf87a86cc1e9"'),
+    default_role = uor.role
+    FROM public.user_org_roles AS uor
+WHERE auth.users.id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
+  AND uor.id = '30726982-30f6-4a57-b2d6-bf87a86cc1e9';
+
 --- revert
 UPDATE auth.users
-SET metadata['current_org_user_id'] = 'b5a75385-47de-429a-9488-433567deb762'::uuid
-WHERE id = 'bacd19f4-0cc4-43d1-9e7a-4e5098ed8d83';
+SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"017477ff-4e55-4be4-902e-61256faa4859"'),
+    default_role = uor.role
+    FROM public.user_org_roles AS uor
+WHERE auth.users.id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
+  AND uor.id = '017477ff-4e55-4be4-902e-61256faa4859';
 ```
 
 ```http

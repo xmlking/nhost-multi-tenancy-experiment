@@ -60,7 +60,7 @@ select_permissions:
       columns:
         - allowed_email_domains
         - allowed_emails
-        - annotations
+        - metadata
         - auto_enroll
         - blocked_email_domains
         - blocked_emails
@@ -85,7 +85,7 @@ update_permissions:
       columns:
         - allowed_email_domains
         - allowed_emails
-        - annotations
+        - metadata
         - auto_enroll
         - blocked_email_domains
         - blocked_emails

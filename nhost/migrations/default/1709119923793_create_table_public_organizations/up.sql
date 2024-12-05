@@ -4,7 +4,7 @@ CREATE TABLE public.organizations
     display_name          text        NOT NULL,
     description           text,
     tags                  text[],
-    annotations           public.hstore,
+    metadata              jsonb,
     created_by            uuid        NOT NULL,
     updated_by            uuid        NOT NULL,
     created_at            timestamptz NOT NULL DEFAULT now(),
