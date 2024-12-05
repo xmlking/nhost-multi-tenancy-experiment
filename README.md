@@ -126,4 +126,4 @@ docker push ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-su
 
 ## Limitations
 
-- we need to fork [nhost/hasura-auth](https://github.com/nhost/hasura-auth) and [allow custom claims to overwrite the default claims](https://github.com/xmlking/hasura-auth/commit/6b22b22d090a07f7292f8e35ae4b4a93f16832b5) untile the official nhsot natively suport `multi-tenency`.
+- we need to fork [nhost/hasura-auth](https://github.com/nhost/hasura-auth) and [allow custom claims to overwrite the default claims](https://github.com/xmlking/hasura-auth/commit/6b22b22d090a07f7292f8e35ae4b4a93f16832b5) untile the official nhost natively suport `multi-tenency`.
