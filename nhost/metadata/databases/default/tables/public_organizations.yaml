@@ -1,0 +1,100 @@
+table:
+  name: organizations
+  schema: public
+configuration:
+  column_config:
+    allowed_email_domains:
+      custom_name: allowedEmailDomains
+    allowed_emails:
+      custom_name: allowedEmails
+    auto_enroll:
+      custom_name: autoEnroll
+    blocked_email_domains:
+      custom_name: blockedEmailDomains
+    blocked_emails:
+      custom_name: blockedEmails
+    created_at:
+      custom_name: createdAt
+    created_by:
+      custom_name: createdBy
+    display_name:
+      custom_name: displayName
+    updated_at:
+      custom_name: updatedAt
+    updated_by:
+      custom_name: updatedBy
+  custom_column_names:
+    allowed_email_domains: allowedEmailDomains
+    allowed_emails: allowedEmails
+    auto_enroll: autoEnroll
+    blocked_email_domains: blockedEmailDomains
+    blocked_emails: blockedEmails
+    created_at: createdAt
+    created_by: createdBy
+    display_name: displayName
+    updated_at: updatedAt
+    updated_by: updatedBy
+  custom_root_fields: {}
+object_relationships:
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+array_relationships:
+  - name: orgUsers
+    using:
+      foreign_key_constraint_on:
+        column: org_id
+        table:
+          name: user_org_roles
+          schema: public
+  - name: subscriptions
+    using:
+      foreign_key_constraint_on:
+        column: org_id
+        table:
+          name: subscriptions
+          schema: public
+select_permissions:
+  - role: me
+    permission:
+      columns:
+        - allowed_email_domains
+        - allowed_emails
+        - annotations
+        - auto_enroll
+        - blocked_email_domains
+        - blocked_emails
+        - created_at
+        - created_by
+        - description
+        - display_name
+        - id
+        - owner_id
+        - tags
+        - updated_at
+        - updated_by
+      filter:
+        id:
+          _in:
+            - X-Hasura-Org-Ids
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: me
+    permission:
+      columns:
+        - allowed_email_domains
+        - allowed_emails
+        - annotations
+        - auto_enroll
+        - blocked_email_domains
+        - blocked_emails
+        - description
+        - display_name
+        - tags
+      filter: {}
+      check:
+        id:
+          _in:
+            - X-Hasura-Org-Ids
+    comment: ""
