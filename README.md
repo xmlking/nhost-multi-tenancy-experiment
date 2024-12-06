@@ -8,17 +8,8 @@ nhost down --volumes
 nhost up --apply-seeds
 ```
 
-### Export Seeds
-
-```shell
-hasura seed create 001_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 002_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 003_organizations --database-name default --from-table public.organizations --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 004_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-```
-
 ## Test
-Switch `current_org_user_id` filed in `auth.users` table's JSONB `metadata` column betweenL:
+Switch `current_org_user_id` field in `auth.users` table's JSONB `metadata` column between:
 `017477ff-4e55-4be4-902e-61256faa4859` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) 
 for `auth.user.id = 572ad1c0-f97b-4e16-b1f6-8b5ca90f931f` and test below **SignIn** request
 
@@ -173,6 +164,15 @@ Connection: close
 ```shell
 docker tag nhost/hasura-auth:0.36.1-sumo ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-sumo
 docker push ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-sumo
+```
+
+### Export Seeds
+
+```shell
+hasura seed create 001_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 002_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 003_organizations --database-name default --from-table public.organizations --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 004_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
 ```
 
 ## Schema
