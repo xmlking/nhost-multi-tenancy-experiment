@@ -25,19 +25,13 @@ for `auth.user.id = 572ad1c0-f97b-4e16-b1f6-8b5ca90f931f` and test below **SignI
 
 ```sql
 UPDATE auth.users
-SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"30726982-30f6-4a57-b2d6-bf87a86cc1e9"'),
-    default_role = uor.role
-    FROM public.user_org_roles AS uor
-WHERE auth.users.id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
-  AND uor.id = '30726982-30f6-4a57-b2d6-bf87a86cc1e9';
+SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"30726982-30f6-4a57-b2d6-bf87a86cc1e9"')
+WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
 
 --- revert
 UPDATE auth.users
-SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"017477ff-4e55-4be4-902e-61256faa4859"'),
-    default_role = uor.role
-    FROM public.user_org_roles AS uor
-WHERE auth.users.id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
-  AND uor.id = '017477ff-4e55-4be4-902e-61256faa4859';
+SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"017477ff-4e55-4be4-902e-61256faa4859"')
+WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
 ```
 
 ```http
