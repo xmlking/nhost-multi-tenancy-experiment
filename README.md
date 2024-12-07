@@ -11,16 +11,16 @@ nhost up --apply-seeds
 ## Test
 Switch `current_org_user_id` field in `auth.users` table's JSONB `metadata` column between:
 `017477ff-4e55-4be4-902e-61256faa4859` (`org:owner`) and `30726982-30f6-4a57-b2d6-bf87a86cc1e9` (`org:member`) 
-for `auth.user.id = 572ad1c0-f97b-4e16-b1f6-8b5ca90f931f` and test below **SignIn** request
+for `auth.user.id = 572ad1c0-f97b-4e16-b1f6-8b5ca90f931f` and test below **SignIn** request via [auth.http](auth.http)
 
 ```sql
 UPDATE auth.users
 SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"30726982-30f6-4a57-b2d6-bf87a86cc1e9"')
-WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
+WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f';
 --- revert
 UPDATE auth.users
 SET metadata = jsonb_set(metadata, '{current_org_user_id}', '"017477ff-4e55-4be4-902e-61256faa4859"')
-WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f'
+WHERE id = '572ad1c0-f97b-4e16-b1f6-8b5ca90f931f';
 ```
 
 ```http
@@ -35,7 +35,15 @@ Content-Type: application/json
 }
 ```
 
-Response
+Or 
+
+```shell
+http POST  https://local.auth.local.nhost.run/v1/signin/email-password \
+ email=john.smith@gmail.com \
+ password='Str0ngPassw#ord-94|%'
+```
+
+Response 
 
 ```
 HTTP/1.1 200 OK
