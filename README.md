@@ -39,7 +39,7 @@ Or
 
 ```shell
 http POST  https://local.auth.local.nhost.run/v1/signin/email-password \
- email=john.smith@gmail.com \
+ email=sumanth.chinthagunta@gmail.com \
  password='Str0ngPassw#ord-94|%'
 ```
 
@@ -177,10 +177,13 @@ docker push ghcr.io/xmlking/nhost-multi-tenancy-experiment/hasura-auth:0.36.1-su
 ### Export Seeds
 
 ```shell
-hasura seed create 001_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 002_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 003_organizations --database-name default --from-table public.organizations --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
-hasura seed create 004_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 001_roles --database-name default --from-table auth.roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 002_users --database-name default --from-table auth.users --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 003_user_roles --database-name default --from-table auth.user_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 004_organizations --database-name default --from-table public.organizations --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 005_user_org_roles --database-name default --from-table public.user_org_roles --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 007_groups --database-name default --from-table public.groups --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
+hasura seed create 008_user_groups --database-name default --from-table public.user_groups --endpoint https://local.hasura.local.nhost.run --admin-secret hasura-admin-secret
 ```
 
 ## Schema

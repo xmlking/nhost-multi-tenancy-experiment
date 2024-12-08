@@ -69,24 +69,12 @@ default = 'mp'
 rating = 'g'
 
 [auth.user.email]
-allowed = ['sumo@demo.com', 'manager@chinthagunta.com', 'supervisor@chinthagunta.com', 'user1@chinthagunta.com', 'user2@chinthagunta.com']
-blocked = ['bad@example.com']
 
 [auth.user.emailDomains]
-allowed = ['gmail.com', 'outlook.com']
-blocked = ['example.org']
 
 [auth.session]
 [auth.session.accessToken]
 expiresIn = 900
-
-#[[auth.session.accessToken.customClaims]]
-#key = 'allowed-roles'
-#value = 'roles.role[]'
-#
-#[[auth.session.accessToken.customClaims]]
-#key = 'default-role'
-#value = 'currentOrg.role'
 
 [[auth.session.accessToken.customClaims]]
 key = 'Org-Id'

@@ -1,0 +1,13 @@
+table:
+  name: user_groups
+  schema: public
+configuration:
+  column_config:
+    group_id:
+      custom_name: groupId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    group_id: groupId
+    user_id: userId
+  custom_root_fields: {}
