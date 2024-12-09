@@ -82,7 +82,7 @@ value = 'currentOrgId'
 
 [[auth.session.accessToken.customClaims]]
 key = 'Org-Ids'
-value = 'allowedOrgs.org_id[]'
+value = 'allowedOrgs.orgId[]'
 
 [[auth.session.accessToken.customClaims]]
 key = 'user-email'
