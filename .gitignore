@@ -1,4 +1,5 @@
 .idea
 .nhost
+TODO
 !.secrets
 !.env

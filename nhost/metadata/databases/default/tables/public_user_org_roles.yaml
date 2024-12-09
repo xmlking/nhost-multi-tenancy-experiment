@@ -7,15 +7,24 @@ configuration:
       custom_name: createdAt
     created_by:
       custom_name: createdBy
+    is_current_org:
+      custom_name: isCurrentOrg
+    org_id:
+      custom_name: orgId
     updated_at:
       custom_name: updatedAt
     updated_by:
       custom_name: updatedBy
+    user_id:
+      custom_name: userId
   custom_column_names:
     created_at: createdAt
     created_by: createdBy
+    is_current_org: isCurrentOrg
+    org_id: orgId
     updated_at: updatedAt
     updated_by: updatedBy
+    user_id: userId
   custom_root_fields: {}
 object_relationships:
   - name: organization
@@ -24,16 +33,79 @@ object_relationships:
   - name: user
     using:
       foreign_key_constraint_on: user_id
-select_permissions:
-  - role: public
+insert_permissions:
+  - role: org:admin
     permission:
+      check:
+        org_id:
+          _eq: X-Hasura-Org-Id
+      set:
+        created_by: x-hasura-User-Id
+        updated_by: x-hasura-User-Id
       columns:
-        - id
+        - is_current_org
         - org_id
         - role
         - user_id
+    comment: ""
+select_permissions:
+  - role: org:admin
+    permission:
+      columns:
+        - is_current_org
+        - role
+        - created_at
+        - updated_at
+        - created_by
+        - org_id
+        - updated_by
+        - user_id
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - org_id:
+              _in: X-Hasura-Org-Ids
+      allow_aggregations: true
+    comment: ""
+  - role: org:member
+    permission:
+      columns:
+        - created_at
+        - created_by
+        - is_current_org
+        - org_id
+        - role
+        - updated_at
+        - updated_by
+        - user_id
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - org_id:
+              _eq: X-Hasura-Org-Id
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: org:admin
+    permission:
+      columns:
+        - is_current_org
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - org_id:
+              _in: X-Hasura-Org-Ids
+      check: null
+      set:
+        updated_by: x-hasura-User-Id
+    comment: ""
+delete_permissions:
+  - role: org:admin
+    permission:
       filter:
         org_id:
-          _in:
-            - X-Hasura-Org-Ids
+          _eq: X-Hasura-Org-Id
     comment: ""

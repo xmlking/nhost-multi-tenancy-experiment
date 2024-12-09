@@ -54,9 +54,7 @@ WHERE
 -- Insert into public.user_org_roles
 INSERT INTO public.user_org_roles (user_id, org_id, role)
 VALUES (NEW.id, organization_id, 'org:member')
-    RETURNING id INTO NEW.metadata->>'current_org_user_id';
-
--- Update default_role and metadata->>'current_org_user_id'
+    RETURNING user_id ;
 NEW.default_role := 'org:member';
 END IF;
 
@@ -65,7 +63,7 @@ END;
 $$ LANGUAGE plpgsql;
 ---
 CREATE TRIGGER trg_check_and_add_to_user_org_roles
-BEFORE INSERT
+AFTER INSERT
 ON auth.users
 FOR EACH ROW
 EXECUTE FUNCTION check_and_add_to_org_roles();

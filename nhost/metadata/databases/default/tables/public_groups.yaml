@@ -23,3 +23,58 @@ configuration:
     updated_at: updatedAt
     updated_by: updatedBy
   custom_root_fields: {}
+insert_permissions:
+  - role: org:admin
+    permission:
+      check: {}
+      set:
+        created_by: x-hasura-User-Id
+        org_id: x-hasura-Org-Id
+        updated_by: x-hasura-User-Id
+      columns:
+        - description
+        - display_name
+        - metadata
+        - tags
+    comment: ""
+select_permissions:
+  - role: org:admin
+    permission:
+      columns:
+        - tags
+        - metadata
+        - description
+        - display_name
+        - created_at
+        - updated_at
+        - created_by
+        - id
+        - org_id
+        - updated_by
+      filter:
+        org_id:
+          _eq: X-Hasura-Org-Id
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: org:admin
+    permission:
+      columns:
+        - description
+        - display_name
+        - metadata
+        - tags
+      filter:
+        org_id:
+          _eq: X-Hasura-Org-Id
+      check: null
+      set:
+        org_id: x-hasura-Org-Id
+    comment: ""
+delete_permissions:
+  - role: org:admin
+    permission:
+      filter:
+        org_id:
+          _eq: X-Hasura-Org-Id
+    comment: ""

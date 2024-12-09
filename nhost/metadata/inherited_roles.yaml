@@ -7,7 +7,7 @@
     - org:member
 - role_name: org:billing
   role_set:
-    - user
+    - org:member
 - role_name: org:member
   role_set:
     - user

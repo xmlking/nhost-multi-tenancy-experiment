@@ -78,15 +78,11 @@ expiresIn = 900
 
 [[auth.session.accessToken.customClaims]]
 key = 'Org-Id'
-value = 'currentOrg.org_id'
+value = 'currentOrgId'
 
 [[auth.session.accessToken.customClaims]]
 key = 'Org-Ids'
 value = 'allowedOrgs.org_id[]'
-
-[[auth.session.accessToken.customClaims]]
-key = 'Org-User-Id'
-value = 'currentOrg.id'
 
 [[auth.session.accessToken.customClaims]]
 key = 'user-email'

@@ -3,9 +3,6 @@
 @graphqlAdminToken = {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
 @authEndpoint = {{$dotenv NHOST_AUTH_URL}}
 
-@userEmail = sumanth.chinthagunta@gmail.com
-@userPassword = Str0ngPassw#ord-94|%
-
 # set token without `''`
 @accessToken =
 ###
@@ -16,10 +13,10 @@ POST {{authEndpoint}}/signup/email-password
 Content-Type: application/json
 
 {
-  "email": "sumanth.chinthagunta@gmail.com",
+  "email": "john.smith@chinthagunta.com",
   "password": "Str0ngPassw#ord-94|%",
   "options": {
-    "displayName": "Sumanth Chinthagunta",
+    "displayName": "John Smith",
     "locale": "en",
     "redirectTo": "https://console.traefik.me:5173/dashboard"
   }
@@ -31,10 +28,10 @@ POST {{authEndpoint}}/signup/email-password
 Content-Type: application/json
 
 {
-  "email": "david.species@gmail.com",
+  "email": "david.bowie@species.com",
   "password": "Str0ngPassw#ord-94|%",
   "options": {
-    "displayName": "David Species",
+    "displayName": "David Bowie",
     "locale": "en",
     "redirectTo": "https://console.traefik.me:5173/dashboard"
   }
@@ -47,7 +44,7 @@ POST {{authEndpoint}}/signin/email-password
 Content-Type: application/json
 
 {
-  "email": "sumanth.chinthagunta@gmail.com",
+  "email": "john.smith@chinthagunta.com",
   "password": "Str0ngPassw#ord-94|%"
 }
 
@@ -57,6 +54,6 @@ POST {{authEndpoint}}/signin/email-password
 Content-Type: application/json
 
 {
-  "email": "david.species@gmail.com",
+  "email": "david.bowie@species.com",
   "password": "Str0ngPassw#ord-94|%"
 }

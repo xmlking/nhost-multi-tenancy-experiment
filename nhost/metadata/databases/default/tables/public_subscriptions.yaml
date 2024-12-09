@@ -7,6 +7,8 @@ configuration:
       custom_name: createdAt
     created_by:
       custom_name: createdBy
+    org_id:
+      custom_name: orgId
     stripe_checkout_session_id:
       custom_name: stripeCheckoutSessionId
     stripe_customer_id:
@@ -22,6 +24,7 @@ configuration:
   custom_column_names:
     created_at: createdAt
     created_by: createdBy
+    org_id: orgId
     stripe_checkout_session_id: stripeCheckoutSessionId
     stripe_customer_id: stripeCustomerId
     stripe_subscription_id: stripeSubscriptionId
@@ -29,23 +32,29 @@ configuration:
     updated_by: updatedBy
     valid_until: validUntil
   custom_root_fields: {}
+object_relationships:
+  - name: organization
+    using:
+      foreign_key_constraint_on: org_id
 select_permissions:
-  - role: me
+  - role: org:billing
     permission:
       columns:
-        - created_at
-        - created_by
         - credits
-        - id
-        - org_id
         - plan
         - status
+        - stripe_checkout_session_id
+        - stripe_customer_id
+        - stripe_subscription_id
+        - created_at
         - updated_at
-        - updated_by
         - valid_until
+        - created_by
+        - id
+        - org_id
+        - updated_by
       filter:
         org_id:
-          _in:
-            - X-Hasura-Org-Ids
+          _eq: X-Hasura-Org-Id
       allow_aggregations: true
     comment: ""
