@@ -1,8 +1,10 @@
 table:
-  name: groups
+  name: devices
   schema: public
 configuration:
   column_config:
+    alternate_dns:
+      custom_name: alternateDns
     created_at:
       custom_name: createdAt
     created_by:
@@ -11,44 +13,49 @@ configuration:
       custom_name: displayName
     org_id:
       custom_name: orgId
+    proxy_ip:
+      custom_name: proxyIp
+    public_ip:
+      custom_name: publicIp
     updated_at:
       custom_name: updatedAt
     updated_by:
       custom_name: updatedBy
   custom_column_names:
+    alternate_dns: alternateDns
     created_at: createdAt
     created_by: createdBy
     display_name: displayName
     org_id: orgId
+    proxy_ip: proxyIp
+    public_ip: publicIp
     updated_at: updatedAt
     updated_by: updatedBy
   custom_root_fields: {}
-object_relationships:
-  - name: organization
-    using:
-      foreign_key_constraint_on: org_id
-insert_permissions:
-  - role: org:admin
-    permission:
-      check: {}
-      set:
-        created_by: x-hasura-User-Id
-        org_id: x-hasura-Org-Id
-        updated_by: x-hasura-User-Id
-      columns:
-        - description
-        - display_name
-        - metadata
-        - tags
-    comment: ""
+computed_fields:
+  - name: associatedPools
+    definition:
+      function:
+        name: device_associated_pools
+        schema: public
+  - name: dissociatedPools
+    definition:
+      function:
+        name: device_dissociated_pools
+        schema: public
 select_permissions:
   - role: org:admin
     permission:
       columns:
         - tags
+        - alternate_dns
+        - proxy_ip
         - metadata
         - description
         - display_name
+        - ip
+        - public_ip
+        - version
         - created_at
         - updated_at
         - created_by
@@ -64,16 +71,17 @@ update_permissions:
   - role: org:admin
     permission:
       columns:
+        - alternate_dns
         - description
-        - display_name
         - metadata
+        - proxy_ip
         - tags
       filter:
         org_id:
           _eq: X-Hasura-Org-Id
       check: null
       set:
-        org_id: x-hasura-Org-Id
+        updated_by: x-hasura-User-Id
     comment: ""
 delete_permissions:
   - role: org:admin

@@ -101,13 +101,6 @@ array_relationships:
         remote_table:
           name: user_org_roles
           schema: public
-  - name: groups
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: user_groups
-          schema: public
   - name: refreshTokens
     using:
       foreign_key_constraint_on:
@@ -137,10 +130,20 @@ array_relationships:
           name: user_providers
           schema: auth
 computed_fields:
+  - name: associatedGroups
+    definition:
+      function:
+        name: user_associated_groups
+        schema: public
   - name: currentOrgId
     definition:
       function:
         name: user_current_org
+        schema: public
+  - name: dissociatedGroups
+    definition:
+      function:
+        name: user_dissociated_groups
         schema: public
 select_permissions:
   - role: me
