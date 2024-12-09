@@ -43,4 +43,3 @@ BEGIN
 END;
 $$;
 COMMENT ON FUNCTION public.deleted_record_insert() IS 'Function that copy deleted rows for any table to deleted_record table';
----;

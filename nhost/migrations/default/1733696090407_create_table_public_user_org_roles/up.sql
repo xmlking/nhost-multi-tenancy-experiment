@@ -33,4 +33,3 @@ CREATE TRIGGER insert_deleted_record_when_public_user_org_roles_deleted
     FOR EACH ROW
     EXECUTE FUNCTION public.deleted_record_insert();
 COMMENT ON TRIGGER insert_deleted_record_when_public_user_org_roles_deleted ON public.user_org_roles IS 'trigger to save deleted records for audit';
----;

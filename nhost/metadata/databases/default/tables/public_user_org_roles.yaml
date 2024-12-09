@@ -109,6 +109,18 @@ update_permissions:
       set:
         updated_by: x-hasura-User-Id
     comment: ""
+  - role: org:owner
+    permission:
+      columns:
+        - is_current_org
+        - role
+      filter:
+        org_id:
+          _eq: X-Hasura-Org-Id
+      check: null
+      set:
+        updated_by: x-hasura-User-Id
+    comment: ""
 delete_permissions:
   - role: org:admin
     permission:

@@ -20,4 +20,3 @@ CREATE TRIGGER trg_enforce_single_current_org_per_user
     FOR EACH ROW
 EXECUTE FUNCTION enforce_single_current_org_per_user();
 COMMENT ON TRIGGER trg_enforce_single_current_org_per_user ON public.user_org_roles IS 'Trigger for Enforcing Single Current Org Per User';
----;
